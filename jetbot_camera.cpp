@@ -122,7 +122,7 @@ int main(int argc, char **argv)
    */
    
    	image_transport::ImageTransport it(private_nh);
-   	image_transport::Publisher pub = it.advertise("jetbot_camera/image", 2);
+   	image_transport::Publisher pub = it.advertise("image", 2);
 	camera_pub = &pub;
 
    
