@@ -37,7 +37,7 @@
 gstCamera* camera = NULL;
 
 imageConverter* camera_cvt = NULL;
-ros::Publisher* camera_pub = NULL;
+image_transport::Publisher* camera_pub = NULL;
 
 
 // aquire and publish camera frame
@@ -69,7 +69,7 @@ bool aquireFrame()
 	}
 
 	// publish the message
-	pub.publish(msg);
+	camera_pub->publish(msg);
 	ROS_INFO("published camera frame");
 	return true;
 }
@@ -121,8 +121,10 @@ int main(int argc, char **argv)
 	 * advertise publisher topics
    */
    
-   image_transport::ImageTransport it(private_nh);
-   image_transport::Publisher pub = it.advertise("jetbot_camera/image", 2);
+   	image_transport::ImageTransport it(private_nh);
+   	image_transport::Publisher pub = it.advertise("jetbot_camera/image", 2);
+	camera_pub = &pub;
+
    
 	/*
 	 * start the camera streaming
