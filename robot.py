@@ -1,3 +1,7 @@
+# Author: Balázs Peisz
+# Date: 2020.11.26.
+# Disclaimer: This is a modified version of the original robot.py script which ships with the jetpack SDK
+
 import time
 import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
@@ -41,25 +45,74 @@ class Robot():
         self.pwm[1].start(1)
         
     def set_motors(self, left_speed=1.0, right_speed=1.0):
-        GPIO.output(self.lef
-        self.right_motor.value = right_speed
+        GPIO.output(IN1, GPIO.HIGH)
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.LOW)
+        GPIO.output(IN4, GPIO.HIGH)
+        self.left_speed = ((left_speed - (-1))/2)*100
+        self.right_speed = ((right_speed - (-1))/2)*100
+        print()
+        print()
+        self.pwm[0].ChangeDutyCycle(self.left_speed)
+        self.pwm[1].ChangeDutyCycle(self.right_speed)
         
     def forward(self, speed=1.0, duration=None):
-        self.left_motor.value = speed
-        self.right_motor.value = speed
+        # Setting the motor driver pins to dorward
+        GPIO.output(IN1, GPIO.HIGH)
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.LOW)
+        GPIO.output(IN4, GPIO.HIGH)
+        
+        # Setting the speed for the motors
+        self.speed = ((speed - (-1))/2)*100
+        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[1].ChangeDutyCycle(self.speed)
 
     def backward(self, speed=1.0):
-        self.left_motor.value = -speed
-        self.right_motor.value = -speed
+        # Setting the motor driver pins to backward
+        GPIO.output(IN1, GPIO.LOW)
+        GPIO.output(IN2, GPIO.HIGH)
+        GPIO.output(IN3, GPIO.HIGH)
+        GPIO.output(IN4, GPIO.LOW)
+        
+        # Setting the speed for the motors
+        self.speed = ((speed - (-1))/2)*100
+        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[1].ChangeDutyCycle(self.speed)
 
     def left(self, speed=1.0):
-        self.left_motor.value = -speed
-        self.right_motor.value = speed
+        # Setting the right motor to forward and the left one to backward
+        GPIO.output(IN1, GPIO.LOW) # Left backward
+        GPIO.output(IN2, GPIO.HIGH)
+        GPIO.output(IN3, GPIO.LOW) # Right forward
+        GPIO.output(IN4, GPIO.HIGH)
+        
+        # Seting the speed for the motors
+        self.speed = ((speed - (-1))/2)*100
+        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[1].ChangeDutyCycle(self.speed)
 
     def right(self, speed=1.0):
-        self.left_motor.value = speed
-        self.right_motor.value = -speed
+        # Setting the right motor to backward and the left one to forward
+        GPIO.output(IN1, GPIO.HIGH) # Left forward
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.HIGH) # Right backward
+        GPIO.output(IN4, GPIO.LOW)
+        
+        # Seting the speed for the motors
+        self.speed = ((speed - (-1))/2)*100
+        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[1].ChangeDutyCycle(self.speed)
 
     def stop(self):
-        self.left_motor.value = 0
-        self.right_motor.value = 0
+        #Stopping both motors
+        GPIO.output(IN1, GPIO.LOW)
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.LOW)
+        GPIO.output(IN4, GPIO.LOW)
+        
+        # Setting the motors speed to zero
+        self.left_speed = 0
+        self.right_speed = 0
+        self.pwm[0].ChangeDutyCycle(self.left_speed)
+        self.pwm[1].ChangeDutyCycle(self.right_speed)
