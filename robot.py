@@ -7,20 +7,17 @@ import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 
-class Robot():
-    
-    # Pin configurations
+# Pin configurations
     # Left motor enable, controll pins and PWM for the motor driver's respective pins
-    ENA = 23
     IN1 = 26
     IN2 = 29
     PWMA = 33
     # Left motor enable, controll pins and PWM for the motor driver's respective pins
-    ENB = 35
     IN3 = 37
     IN4 = 38
     PWMB = 32
-    
+
+class Robot():
     
     def __init__(self, *args, **kwargs):
         super(Robot, self).__init__(*args, **kwargs)
