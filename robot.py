@@ -58,18 +58,6 @@ class Robot():
         
     def forward(self, speed=1.0, duration=None):
         # Setting the motor driver pins to dorward
-        GPIO.output(IN1, GPIO.HIGH)
-        GPIO.output(IN2, GPIO.LOW)
-        GPIO.output(IN3, GPIO.LOW)
-        GPIO.output(IN4, GPIO.HIGH)
-        
-        # Setting the speed for the motors
-        self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(self.speed)
-        self.pwm[1].ChangeDutyCycle(self.speed)
-
-    def backward(self, speed=1.0):
-        # Setting the motor driver pins to backward
         GPIO.output(IN1, GPIO.LOW)
         GPIO.output(IN2, GPIO.HIGH)
         GPIO.output(IN3, GPIO.HIGH)
@@ -80,12 +68,24 @@ class Robot():
         self.pwm[0].ChangeDutyCycle(self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
+    def backward(self, speed=1.0):
+        # Setting the motor driver pins to backward
+        GPIO.output(IN1, GPIO.HIGH)
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.LOW)
+        GPIO.output(IN4, GPIO.HIGH)
+        
+        # Setting the speed for the motors
+        self.speed = ((speed - (-1))/2)*100
+        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[1].ChangeDutyCycle(self.speed)
+
     def left(self, speed=1.0):
         # Setting the right motor to forward and the left one to backward
-        GPIO.output(IN1, GPIO.LOW) # Left backward
-        GPIO.output(IN2, GPIO.HIGH)
-        GPIO.output(IN3, GPIO.LOW) # Right forward
-        GPIO.output(IN4, GPIO.HIGH)
+        GPIO.output(IN1, GPIO.HIGH) # Left backward
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.HIGH) # Right forward
+        GPIO.output(IN4, GPIO.LOW)
         
         # Seting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
@@ -94,10 +94,10 @@ class Robot():
 
     def right(self, speed=1.0):
         # Setting the right motor to backward and the left one to forward
-        GPIO.output(IN1, GPIO.HIGH) # Left forward
-        GPIO.output(IN2, GPIO.LOW)
-        GPIO.output(IN3, GPIO.HIGH) # Right backward
-        GPIO.output(IN4, GPIO.LOW)
+        GPIO.output(IN1, GPIO.LOW) # Left forward
+        GPIO.output(IN2, GPIO.HIGH)
+        GPIO.output(IN3, GPIO.LOW) # Right backward
+        GPIO.output(IN4, GPIO.HIGH)
         
         # Seting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
