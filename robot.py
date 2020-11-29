@@ -38,8 +38,8 @@ class Robot():
         
         # Setting up the PWM
         self.pwm = [GPIO.PWM(PWMB,50), GPIO.PWM(PWMA,50)]
-        self.pwm[0].start(0)
-        self.pwm[1].start(1)
+        self.pwm[0].start(0) # Right motor PWM
+        self.pwm[1].start(1) # Left motor PWM
         
     def set_motors(self, left_speed=1.0, right_speed=1.0):
         GPIO.output(IN1, GPIO.HIGH)
@@ -62,7 +62,7 @@ class Robot():
         
         # Setting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[0].ChangeDutyCycle(0.595*self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
     def backward(self, speed=1.0):
@@ -74,7 +74,7 @@ class Robot():
         
         # Setting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[0].ChangeDutyCycle(0.56*self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
     def left(self, speed=1.0):
@@ -86,7 +86,7 @@ class Robot():
         
         # Seting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[0].ChangeDutyCycle(0.595*self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
     def right(self, speed=1.0):
@@ -98,7 +98,7 @@ class Robot():
         
         # Seting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(self.speed)
+        self.pwm[0].ChangeDutyCycle(0.595*self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
     def stop(self):
