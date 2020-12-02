@@ -20,8 +20,8 @@ robot = Robot()
 
 def avoid():
   image = camera.read() # reads in the current frame into a (299,299,3) numpy array
+  image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
   image = preprocess_input(image)
-  
   yhat = model.predict(image) # If the way is free then yhat ~ 1, if it is blocked yhat ~ 0
   
   # If the road is free then go forward, it it is blocked turn left
