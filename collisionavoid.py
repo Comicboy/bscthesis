@@ -1,5 +1,6 @@
 # Importing packages for the neural network
 import numpy as np
+import tensorflow
 from tensorflow.keras import models
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from keras.applications.inception_v3 import preprocess_input
@@ -8,6 +9,12 @@ from keras.applications.inception_v3 import preprocess_input
 from jetbot.jetbot import Robot
 from jetcam.csi_camera import CSICamera
 import time
+
+# Configure the runtime
+config = tensorflow.ConfigProto()
+config.gpu_options.allow_growth = True
+config.gpu_options.per_process_gpu_memory_fraction = 0.4
+session = tensorflow.Session(config=config)
 
 # Load in the model
 model = models.load_model('jetson_inceptionv3.h5')
