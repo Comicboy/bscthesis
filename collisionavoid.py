@@ -2,7 +2,7 @@
 import numpy as np
 from tensorflow.keras import models
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from keras.applications.inception_v3 import preprocess_input, decode_predictions
+from keras.applications.inception_v3 import preprocess_input
 
 # Importing the packages for the jetson
 from jetbot.jetbot import Robot
