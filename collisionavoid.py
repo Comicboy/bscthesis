@@ -11,7 +11,7 @@ from jetcam.csi_camera import CSICamera
 import time
 
 # Configure the runtime
-config = tensorflow.ConfigProto()
+config = tensorflow.compat.v1.ConfigProto()
 config.gpu_options.allow_growth = True
 config.gpu_options.per_process_gpu_memory_fraction = 0.4
 session = tensorflow.Session(config=config)
