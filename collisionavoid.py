@@ -14,7 +14,7 @@ import time
 config = tensorflow.compat.v1.ConfigProto()
 config.gpu_options.allow_growth = True
 config.gpu_options.per_process_gpu_memory_fraction = 0.4
-session = tensorflow.Session(config=config)
+session = tensorflow.compat.v1.Session(config=config)
 
 # Load in the model
 model = models.load_model('jetson_inceptionv3.h5')
