@@ -3,37 +3,39 @@ import numpy as np
 import tensorflow
 from tensorflow.keras import models
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from tensorflow.keras.applications.mobilenet import preprocess_input
+from tensorflow.keras.applications.inception_v3 import preprocess_input
 
-# Importing the packages for the jetson
-from jetbot.jetbot import Robot
-from jetcam.csi_camera import CSICamera
+# Importing the packages for image capture
+import cv2
+
+# Importing the packages for the jetson controll
+import subprocess
 import time
 
-
-# Load in the model
-model = models.load_model('jetson_mobilenet.h5')
-
-# Create camera with compatible output dimensions (299,299)
-camera = CSICamera(width=224, height=224, capture_width=224, capture_height=224, capture_fps=30)
-
-# initializing the motors
-robot = Robot()
-
 def avoid():
-  image = camera.read() # reads in the current frame into a (299,299,3) numpy array
+  # Processing the image frame returned by the image capture
+  ret, frame = cap.read()
+  image = img_to_array(frame)
   image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
   image = preprocess_input(image)
-  yhat = model.predict(image) # If the way is free then yhat ~ 1, if it is blocked yhat ~ 0
+  print(image.shape)
   
-  # If the road is free then go forward, it it is blocked turn left
+  yhat = model.predict(image) # If the way is free then yhat ~ 1, if it is blocked yhat ~ 0
+  print('Prediction is done!')
+  
+  # If the road is free then go forward, if it is blocked turn left
   if yhat > 0.5:
-    robot.forward(0.7)
+    subprocess.run('rostopic pub /jetbot_motors/cmd_str std_msgs/String --once "forward"')
   else:
-    robot.left(0.7)
+    subprocess.run('rostopic pub /jetbot_motors/cmd_str std_msgs/String --once "left"')
     
   time.sleep(0.001)
 
-# Calling the avoid function in an infinite loop
+# Load in the model
+model = models.load_model('jetson_inceptionv3.h5')
+  
+# Capturing the video stream with OpenCV
+cap = cv2.VideoCapture('streamurl')
+
 while(True):
   avoid()
