@@ -9,13 +9,13 @@ GPIO.setmode(GPIO.BOARD)
 
 # Pin configurations
     # Left motor enable, controll pins and PWM for the motor driver's respective pins
-    IN1 = 26
-    IN2 = 29
-    PWMA = 33
+IN1 = 26
+IN2 = 29
+PWMA = 33
     # Left motor enable, controll pins and PWM for the motor driver's respective pins
-    IN3 = 37
-    IN4 = 38
-    PWMB = 32
+IN3 = 37
+IN4 = 38
+PWMB = 32
 
 class Robot():
     
@@ -23,14 +23,12 @@ class Robot():
         super(Robot, self).__init__(*args, **kwargs)
         
         # Setting up the left motor
-        GPIO.setup(ENA, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(IN1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(IN2, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(PWMA, GPIO.OUT)
         self.left_speed = 0 # Variable for controlling the left motor speed
         
         # Setting up the right motor
-        GPIO.setup(ENB, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(PWMB, GPIO.OUT)
