@@ -60,7 +60,7 @@ class Robot():
         
         # Setting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(0.595*self.speed)
+        self.pwm[0].ChangeDutyCycle(0.62*self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
     def backward(self, speed=1.0):
@@ -72,7 +72,7 @@ class Robot():
         
         # Setting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(0.56*self.speed)
+        self.pwm[0].ChangeDutyCycle(0.58*self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
     def left(self, speed=1.0):
@@ -84,7 +84,7 @@ class Robot():
         
         # Seting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(0.595*self.speed)
+        self.pwm[0].ChangeDutyCycle(0.62*self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
     def right(self, speed=1.0):
@@ -96,7 +96,7 @@ class Robot():
         
         # Seting the speed for the motors
         self.speed = ((speed - (-1))/2)*100
-        self.pwm[0].ChangeDutyCycle(0.595*self.speed)
+        self.pwm[0].ChangeDutyCycle(0.62*self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
     def stop(self):
