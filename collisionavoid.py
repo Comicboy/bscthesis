@@ -35,7 +35,7 @@ def avoid():
 model = models.load_model('jetson_inceptionv3.h5')
   
 # Capturing the video stream with OpenCV
-cap = cv2.VideoCapture('streamurl')
+cap = cv2.VideoCapture('udpsrc port=5000 caps = "application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! decodebin ! videoconvert ! appsink', cv2.CAP_GSTREAMER)
 
 while(True):
   avoid()
