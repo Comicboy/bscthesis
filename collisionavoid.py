@@ -26,9 +26,9 @@ def avoid():
   
   # If the road is free then go forward, if it is blocked turn left
   if yhat > 0.5:
-    subprocess.run('rostopic pub /jetbot_motors/cmd_str std_msgs/String --once "forward"')
+    subprocess.run(['rostopic', 'pub', '/jetbot_motors/cmd_str', 'std_msgs/String', '--once', '"forward"'])
   else:
-    subprocess.run('rostopic pub /jetbot_motors/cmd_str std_msgs/String --once "left"')
+    subprocess.run(['rostopic', 'pub', '/jetbot_motors/cmd_str', 'std_msgs/String', '--once', '"left"'])
     
   time.sleep(0.001)
 
