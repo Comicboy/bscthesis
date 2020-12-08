@@ -15,7 +15,8 @@ import time
 def avoid():
   # Processing the image frame returned by the image capture
   ret, frame = cap.read()
-  image = img_to_array(frame)
+  resized = cv2.resize(frame, (299,299), interpolation = cv2.INTER_AREA)
+  image = img_to_array(resized)
   image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
   image = preprocess_input(image)
   print(image.shape)
