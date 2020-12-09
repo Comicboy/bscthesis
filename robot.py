@@ -1,4 +1,4 @@
-# Author: Balázs Peisz
+# Author: Balazs Peisz
 # Date: 2020.11.26.
 # Disclaimer: This is a modified version of the original robot.py script which ships with the jetpack SDK
 
