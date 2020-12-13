@@ -55,7 +55,7 @@ def poseCallback(msg):
 	current_angle = round(current_angle, 1)
 	
 	# If we are at the goal we stop, otherwise we move towards the goal
-	if(current_x != goal_x AND current_y != goal_y):
+	if(current_x != goal_x and current_y != goal_y):
 		# If the orientation of the robot is good we go forward, but if the orientation of the robot doesn't match the orientation of the goal we turn the robot to the desired direction
 		if(current_angle != goal_angle):
 			if(current_angle < goal_angle):
