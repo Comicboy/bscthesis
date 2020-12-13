@@ -24,13 +24,11 @@ def avoid():
   yhat = model.predict(image) # If the way is free then yhat ~ 1, if it is blocked yhat ~ 0
   print('Prediction is done!')
   
-  # If the road is free then go forward, if it is blocked turn left
-  if yhat > 0.5:
-    subprocess.run(['rostopic', 'pub', '/jetbot_motors/cmd_str', 'std_msgs/String', '--once', '"forward"'])
-  else:
+  # If the road is free go towards the target, if it is blocked left
+  if yhat < 0.5:
     subprocess.run(['rostopic', 'pub', '/jetbot_motors/cmd_str', 'std_msgs/String', '--once', '"left"'])
     
-  time.sleep(0.001)
+  time.sleep(0.1)
 
 # Load in the model
 model = models.load_model('jetson_inceptionv3.h5')
