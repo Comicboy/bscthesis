@@ -1,21 +1,20 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import time
-from jetbot.jetbot import Robot
+from jetbot import Robot
 import rospy
 from std_msgs.msg import String
 from geometry_msgs.msg import PoseStamped
 from tf.transformations import euler_from_quaternion
 
 # Global variables for the robots current 2D position and orientation
-goal_x = 0.0
-goal_y = 0.0
-goal_angle = 0.0
 
 # Stops all motors
 def all_stop():
 	robot.stop()
 
 def goalCallback(msg):
+        global goal_x
+        global goal_y
 	# Getting the 2D coordinates of the goal
 	goal_x = msg.pose.position.x
 	goal_y = msg.pose.position.y
@@ -31,6 +30,9 @@ def goalCallback(msg):
 	goal_angle = yaw
 
 def poseCallback(msg):
+        global goal_x
+        global goal_y
+        global goal_angle
 	# Getting the current 2D coordinates of the robots position
 	current_x = msg.pose.position.x
 	current_y = msg.pose.position.y
@@ -55,7 +57,7 @@ def poseCallback(msg):
 	current_angle = round(current_angle, 1)
 	
 	# If we are at the goal we stop, otherwise we move towards the goal
-	if(current_x != goal_x AND current_y != goal_y):
+	if(current_x != goal_x and current_y != goal_y):
 		# If the orientation of the robot is good we go forward, but if the orientation of the robot doesn't match the orientation of the goal we turn the robot to the desired direction
 		if(current_angle != goal_angle):
 			if(current_angle < goal_angle):
@@ -110,6 +112,10 @@ if __name__ == '__main__':
 
 	# Stop the motors as precaution
 	all_stop()
+
+        goal_x = 0.0
+        goal_y = 0.0
+        goal_angle = 0.0
 
 	# setup ros node
 	rospy.init_node('jetbot_motors')
