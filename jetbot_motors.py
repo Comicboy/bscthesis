@@ -6,6 +6,7 @@ from std_msgs.msg import String
 from geometry_msgs.msg import PoseStamped
 from tf.transformations import euler_from_quaternion
 
+# Global variables for the robots current 2D position and orientation
 goal_x = 0.0
 goal_y = 0.0
 goal_angle = 0.0
@@ -15,8 +16,12 @@ def all_stop():
 	robot.stop()
 
 def goalCallback(msg):
+	# Getting the 2D coordinates of the goal
+	goal_x = msg.pose.position.x
+	goal_y = msg.pose.position.y
+	
 	# Getting the quaternion representing the orientation of the goal
-	orientation_q = msg.pose.pose.orientation
+	orientation_q = msg.pose.orientation
 	
 	# Creating a list which contains each element of the quaternion for conversion
 	orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
@@ -26,8 +31,12 @@ def goalCallback(msg):
 	goal_angle = yaw
 
 def poseCallback(msg):
+	# Getting the current 2D coordinates of the robots position
+	current_x = msg.pose.position.x
+	current_y = msg.pose.position.y
+	
 	# Getting the quaternion representing the current orientation of the robot
-	orientation_q = msg.pose.pose.orientation
+	orientation_q = msg.pose.orientation
 	
 	# Creating a list which contains each element of the quaternion for conversion
 	orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
@@ -36,22 +45,31 @@ def poseCallback(msg):
 	(roll, pitch, yaw) = euler_from_quaternion (orientation_list)
 	current_angle = yaw
 	
-	# Rounding the orientations in order to counter the lack of accuracy of the motor controls
+	# Rounding the orientations and positions in order to counter the lack of accuracy of the motor controls
+	goal_x = round(goal_x, 1)
+	goal_y = round(goal_y, 1)
 	goal_angle = round(goal_angle, 1)
+	
+	current_x = round(current_x, 1)
+	current_y = round(current_y, 1)
 	current_angle = round(current_angle, 1)
 	
-	#
-	if(current_angle != goal_angle):
-		if(current_angle < goal_angle):
-			while(current_angle < goal_angle):
-				robot.left(0.5)
-			robot.forward(0.5)
+	# If we are at the goal we stop, otherwise we move towards the goal
+	if(current_x != goal_x AND current_y != goal_y):
+		# If the orientation of the robot is good we go forward, but if the orientation of the robot doesn't match the orientation of the goal we turn the robot to the desired direction
+		if(current_angle != goal_angle):
+			if(current_angle < goal_angle):
+				while(current_angle < goal_angle):
+					robot.left(0.5)
+				robot.forward(0.5)
+			else:
+				while(current_angle > goal_angle):
+					robot.right(0.5)
+				robot.forward(0.5)
 		else:
-			while(current_angle > goal_angle):
-				robot.right(0.5)
 			robot.forward(0.5)
 	else:
-		robot.forward(0.5)
+		all_stop()
 
 	
 	
