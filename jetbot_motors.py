@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import math
 import time
 from jetbot import Robot
 import rospy
@@ -13,26 +14,18 @@ def all_stop():
 	robot.stop()
 
 def goalCallback(msg):
+	print('I received the goal coordinates!')
         global goal_x
         global goal_y
 	# Getting the 2D coordinates of the goal
 	goal_x = msg.pose.position.x
 	goal_y = msg.pose.position.y
-	
-	# Getting the quaternion representing the orientation of the goal
-	orientation_q = msg.pose.orientation
-	
-	# Creating a list which contains each element of the quaternion for conversion
-	orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
-	
-	# Converting the orientation from quaternion to euler
-	(roll, pitch, yaw) = euler_from_quaternion (orientation_list)
-	goal_angle = yaw
 
 def poseCallback(msg):
+	print('I got the position!')
         global goal_x
         global goal_y
-        global goal_angle
+	
 	# Getting the current 2D coordinates of the robots position
 	current_x = msg.pose.position.x
 	current_y = msg.pose.position.y
@@ -50,23 +43,33 @@ def poseCallback(msg):
 	# Rounding the orientations and positions in order to counter the lack of accuracy of the motor controls
 	goal_x = round(goal_x, 1)
 	goal_y = round(goal_y, 1)
-	goal_angle = round(goal_angle, 1)
 	
 	current_x = round(current_x, 1)
 	current_y = round(current_y, 1)
 	current_angle = round(current_angle, 1)
 	
-	# If we are at the goal we stop, otherwise we move towards the goal
-	if(current_x != goal_x and current_y != goal_y):
-		# If the orientation of the robot is good we go forward, but if the orientation of the robot doesn't match the orientation of the goal we turn the robot to the desired direction
-		if(current_angle != goal_angle):
-			if(current_angle < goal_angle):
-				robot.left(0.5)
+	# Calculating the angle in which we have to turn in order to reach the goal
+	target_angle = math.atan((goal_y - current_y)/(goal_x - current_x))
+	target_angle = round(target_angle, 1)
+	
+	print('Goal: ', goal_x, goal_y)
+	print('Position: ', current_x, current_y, current_angle)
+	print('Target angle: ', target_angle)
+	
+	# If we are at the goal coordinates we stop, otherwise we move towards its direction by first turning into the correct angle (target_angle) then moving forward
+	if(current_x != goal_x or current_y != goal_y):
+		if(current_angle != target_angle):
+			if(current_angle < target_angle):
+				print('Im going left')
+				robot.left(0.1)
 			else:
-				robot.right(0.5)
+				print('Im going right')
+				robot.right(0.1)
 		else:
-			robot.forward(0.5)
+			print('Im going forward')
+			robot.forward(0.1)
 	else:
+		print('Im stopping')
 		all_stop()
 
 	
@@ -76,17 +79,13 @@ def on_cmd_str(msg):
 	rospy.loginfo(rospy.get_caller_id() + ' cmd_str=%s', msg.data)
 
 	if msg.data.lower() == "left":
-		robot.left(0.5)
-		time.sleep(1)
-	elif msg.data.lower(0.5) == "right":
-		robot.right(0.5)
-		time.sleep(1)
+		robot.left(0.1)
+	elif msg.data.lower() == "right":
+		robot.right(0.1)
 	elif msg.data.lower() == "forward":
-		robot.forward(0.5)
-		time.sleep(1)
+		robot.forward(0.1)
 	elif msg.data.lower() == "backward":
-		robot.backward(0.5)
-		time.sleep(1)
+		robot.backward(0.1)
 	elif msg.data.lower() == "stop":
 		all_stop()
 	else:
@@ -104,7 +103,6 @@ if __name__ == '__main__':
 
         goal_x = 0.0
         goal_y = 0.0
-        goal_angle = 0.0
 
 	# setup ros node
 	rospy.init_node('jetbot_motors')
