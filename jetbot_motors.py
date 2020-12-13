@@ -61,13 +61,20 @@ def poseCallback(msg):
 			if(current_angle < goal_angle):
 				while(current_angle < goal_angle):
 					robot.left(0.5)
+					time.sleep(1)
+					
 				robot.forward(0.5)
+				time.sleep(1)
 			else:
 				while(current_angle > goal_angle):
 					robot.right(0.5)
+					time.sleep(1)
+					
 				robot.forward(0.5)
+				time.sleep(1)
 		else:
 			robot.forward(0.5)
+			time.sleep(1)
 	else:
 		all_stop()
 
@@ -79,16 +86,16 @@ def on_cmd_str(msg):
 
 	if msg.data.lower() == "left":
 		robot.left(0.5)
-		time.sleep(3)
+		time.sleep(1)
 	elif msg.data.lower(0.5) == "right":
 		robot.right(0.5)
-		time.sleep(3)
+		time.sleep(1)
 	elif msg.data.lower() == "forward":
 		robot.forward(0.5)
-		time.sleep(3)
+		time.sleep(1)
 	elif msg.data.lower() == "backward":
 		robot.backward(0.5)
-		time.sleep(3)
+		time.sleep(1)
 	elif msg.data.lower() == "stop":
 		all_stop()
 	else:
