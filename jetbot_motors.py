@@ -61,22 +61,11 @@ def poseCallback(msg):
 		# If the orientation of the robot is good we go forward, but if the orientation of the robot doesn't match the orientation of the goal we turn the robot to the desired direction
 		if(current_angle != goal_angle):
 			if(current_angle < goal_angle):
-				while(current_angle < goal_angle):
-					robot.left(0.5)
-					time.sleep(1)
-					
-				robot.forward(0.5)
-				time.sleep(1)
+				robot.left(0.5)
 			else:
-				while(current_angle > goal_angle):
-					robot.right(0.5)
-					time.sleep(1)
-					
-				robot.forward(0.5)
-				time.sleep(1)
+				robot.right(0.5)
 		else:
 			robot.forward(0.5)
-			time.sleep(1)
 	else:
 		all_stop()
 
